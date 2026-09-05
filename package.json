@@ -1,0 +1,16 @@
+﻿{
+  "name": "ai-powered-mail-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI-Powered Mail Web Application - Nebula KnowLab Hiring Task",
+  "scripts": {
+    "dev": "concurrently -n \"SERVER,CLIENT\" -c \"cyan,magenta\" \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "build": "npm run build --prefix server && npm run build --prefix client",
+    "test": "npm run test --prefix server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
