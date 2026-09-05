@@ -1,4 +1,4 @@
-﻿import { GoogleGenAI, Type, FunctionDeclaration } from '@google/genai';
+import { GoogleGenAI, Type, FunctionDeclaration } from '@google/genai';
 import { config } from '../config.js';
 import { UIAction, UIContextSnapshot, AssistantChatResponse } from '../types/index.js';
 import { db } from '../db/database.js';
@@ -294,14 +294,17 @@ ${JSON.stringify(context, null, 2)}
     if (lower.startsWith('send an email to') || lower.startsWith('send email to') || lower.startsWith('compose email to') || lower.startsWith('write an email to')) {
       const emailMatch = prompt.match(/to\s+([^\s,]+@[^\s,]+|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}|[a-zA-Z]+)/i);
       const subjectMatch = prompt.match(/subject\s+['"]([^'"]+)['"]/i) || prompt.match(/subject\s+([^,]+?)(?:\s+and\s+body|\s+with\s+body|$)/i);
-      const bodyMatch = prompt.match(/body\s+['"]([^'"]+)['"]/i) || prompt.match(/body\s+(.+)$/i);
-
       let to = emailMatch ? emailMatch[1].trim() : 'john@example.com';
       if (!to.includes('@')) {
         to = `${to.toLowerCase()}@example.com`;
       }
       const subject = subjectMatch ? subjectMatch[1].trim() : 'Meeting Tomorrow';
-      const body = bodyMatch ? bodyMatch[1].trim() : "Let's meet at 3pm";
+      
+      let body = "Let's meet at 3pm";
+      const bodyFullMatch = prompt.match(/body\s+['"“‘](.+)['"”’]\s*$/i) || prompt.match(/body\s+['"“‘](.+)$/i) || prompt.match(/body\s+(.+)$/i);
+      if (bodyFullMatch) {
+        body = bodyFullMatch[1].replace(/^['"“‘]|['"”’]$/g, '').trim();
+      }
 
       // 1. Open compose & visibly fill fields
       actions.push({
