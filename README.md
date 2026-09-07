@@ -206,6 +206,12 @@ In the application, click on the **AI Co-pilot panel** on the right (or click an
 
 ---
 
+## Demo
+
+[▶️ Watch Demo Video](https://drive.google.com/file/d/1_V4LjCDCaXxwWU4-jPX9G54Pfai7HW6K/view?usp=drivesdk)
+
+---
+
 ## 🔮 What I Would Improve with More Time
 
 1. **Full Gmail Push via Google Cloud Pub/Sub Topic**: Wire up production Cloud Pub/Sub webhooks with Cloud KMS signature verification for enterprise domains.
