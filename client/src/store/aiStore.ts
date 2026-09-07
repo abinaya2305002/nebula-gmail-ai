@@ -1,4 +1,4 @@
-﻿import { create } from 'zustand';
+import { create } from 'zustand';
 import { AssistantMessage, UIAction, UIContextSnapshot } from '../types/ai.js';
 import { useMailStore } from './mailStore.js';
 import { useUIStore } from './uiStore.js';
@@ -12,6 +12,7 @@ interface AIState {
 
   sendMessage: (prompt: string) => Promise<void>;
   executeAction: (action: UIAction) => Promise<void>;
+  triggerUndo: (action?: UIAction) => Promise<void>;
   clearHistory: () => void;
 }
 
@@ -21,7 +22,7 @@ export const useAIStore = create<AIState>((set, get) => ({
       id: 'welcome_msg',
       role: 'assistant',
       content:
-        '👋 Hi! I am your AI Co-pilot for Email. Unlike typical chatbots, I directly control the interface on your behalf!\n\nTry clicking a suggestion chip below, or ask me:\n• "Send an email to john@example.com with subject \'Meeting Tomorrow\' and body \'Let’s meet at 3pm\'"\n• "Show me emails from the last 10 days"\n• "Open the latest email from David"\n• "Reply to this" (while reading an email)\n• "Show only unread emails from this week"',
+        '👋 Welcome to **Nebula Gmail AI Copilot**! I directly control your inbox, compose drafts, filter threads, and navigate emails.\n\nAsk me anything in natural language:\n• "Send an email to john@example.com with subject \'Meeting Tomorrow\' and body \'Let’s meet at 3pm\'"\n• "Show my recent emails"\n• "Show emails from the last 10 days"\n• "Open the latest email from David"\n• "Reply to this saying sounds good"\n• "Show only unread emails from this week"\n• "Show last 2 emails"',
       timestamp: Date.now(),
     },
   ],
@@ -103,6 +104,9 @@ export const useAIStore = create<AIState>((set, get) => ({
           role: 'assistant',
           content: data.message,
           actions: data.actions,
+          timeline: data.timeline,
+          undoAction: data.undoAction,
+          emailPreviews: data.emailPreviews,
           richContent: data.richContent,
           timestamp: Date.now(),
         };
@@ -134,10 +138,11 @@ export const useAIStore = create<AIState>((set, get) => ({
     set({ isExecuting: true });
     const mailStore = useMailStore.getState();
     const uiStore = useUIStore.getState();
+    const payload = action.payload || {};
 
     switch (action.type) {
       case 'OPEN_COMPOSE': {
-        const { to, subject, body, mode, replyToEmailId, threadId } = action.payload;
+        const { to, subject, body, mode, replyToEmailId, threadId } = payload;
         // Trigger visible animated filling so the user sees fields type in!
         await uiStore.animateFillCompose({ to, subject, body });
         if (replyToEmailId) {
@@ -146,14 +151,19 @@ export const useAIStore = create<AIState>((set, get) => ({
         break;
       }
 
+      case 'CLOSE_COMPOSE': {
+        uiStore.closeCompose();
+        break;
+      }
+
       case 'FILL_COMPOSE': {
-        const { to, subject, body } = action.payload;
+        const { to, subject, body } = payload;
         await uiStore.animateFillCompose({ to, subject, body });
         break;
       }
 
       case 'FILTER_EMAILS': {
-        const { query, sender, dateRangeDays, isUnread, folder } = action.payload;
+        const { query, sender, dateRangeDays, isUnread, folder } = payload;
         if (folder && folder !== mailStore.activeFolder) {
           mailStore.setActiveFolder(folder);
         }
@@ -168,7 +178,7 @@ export const useAIStore = create<AIState>((set, get) => ({
       }
 
       case 'NAVIGATE_TO_EMAIL': {
-        const { emailId, senderQuery, subjectQuery, latest } = action.payload;
+        const { emailId, senderQuery, subjectQuery, latest } = payload;
         let targetId = emailId;
 
         // If no explicit ID, resolve against currently loaded emails or fetch
@@ -199,11 +209,16 @@ export const useAIStore = create<AIState>((set, get) => ({
       }
 
       case 'NAVIGATE_FOLDER': {
-        const { folder } = action.payload;
+        const { folder } = payload;
         if (folder) {
           mailStore.setActiveFolder(folder);
           uiStore.setCurrentView('inbox');
         }
+        break;
+      }
+
+      case 'UNDO_LAST_ACTION': {
+        mailStore.undoLastAction();
         break;
       }
 
@@ -214,6 +229,19 @@ export const useAIStore = create<AIState>((set, get) => ({
     }
 
     set({ isExecuting: false });
+  },
+
+  triggerUndo: async (action?: UIAction) => {
+    if (action) {
+      await get().executeAction(action);
+    } else {
+      useMailStore.getState().undoLastAction();
+    }
+    useUIStore.getState().addToast({
+      title: 'Action Undone',
+      message: action?.description || 'Reverted previous action',
+      type: 'info',
+    });
   },
 
   clearHistory: () => set({ messages: [] }),

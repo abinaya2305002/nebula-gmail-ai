@@ -1,4 +1,4 @@
-﻿export interface EmailMessage {
+export interface EmailMessage {
   id: string;
   threadId: string;
   folder: 'inbox' | 'sent' | 'starred' | 'trash' | 'drafts';
@@ -42,6 +42,7 @@ export interface UserAccount extends UserProfile {
 
 export type UIActionType =
   | 'OPEN_COMPOSE'
+  | 'CLOSE_COMPOSE'
   | 'FILL_COMPOSE'
   | 'SEND_EMAIL'
   | 'FILTER_EMAILS'
@@ -50,11 +51,12 @@ export type UIActionType =
   | 'REQUEST_CONFIRMATION'
   | 'SHOW_EMAIL_PREVIEW'
   | 'REPLY_TO_EMAIL'
-  | 'FORWARD_EMAIL';
+  | 'FORWARD_EMAIL'
+  | 'UNDO_LAST_ACTION';
 
 export interface UIAction {
   type: UIActionType;
-  payload: Record<string, any>;
+  payload?: Record<string, any>;
   description?: string;
 }
 
@@ -94,9 +96,27 @@ export interface UIContextSnapshot {
   }>;
 }
 
+export interface TimelineStep {
+  step: string;
+  status: 'completed' | 'in_progress' | 'pending';
+}
+
+export interface CompactEmailPreview {
+  id: string;
+  senderName: string;
+  senderEmail: string;
+  subject: string;
+  snippet: string;
+  date: number;
+  isUnread: boolean;
+}
+
 export interface AssistantChatResponse {
   message: string;
   actions: UIAction[];
+  timeline?: TimelineStep[];
+  undoAction?: UIAction;
+  emailPreviews?: CompactEmailPreview[];
   richContent?: {
     type: 'email_preview' | 'confirmation_card' | 'quick_replies';
     data: any;

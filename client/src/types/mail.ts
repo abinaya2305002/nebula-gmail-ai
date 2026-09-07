@@ -1,4 +1,4 @@
-﻿export interface EmailMessage {
+export interface EmailMessage {
   id: string;
   threadId: string;
   folder: 'inbox' | 'sent' | 'starred' | 'trash' | 'drafts';
@@ -31,6 +31,7 @@ export interface EmailFilterParams {
   sender?: string;
   dateRangeDays?: number;
   isUnread?: boolean;
+  limit?: number;
 }
 
 export interface UserProfile {

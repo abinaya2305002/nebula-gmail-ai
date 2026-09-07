@@ -1,4 +1,4 @@
-﻿import Database from 'better-sqlite3';
+import Database from 'better-sqlite3';
 import fs from 'fs';
 import path from 'path';
 import { config } from '../config.js';
@@ -321,8 +321,8 @@ class AppDatabase {
   private seedDemoDataIfEmpty() {
     const demoUser: UserAccount = {
       id: 'demo_user_nebula',
-      email: 'alex.developer@example.com',
-      displayName: 'Alex Developer',
+      email: 'abinaya@example.com',
+      displayName: 'Abinaya',
       avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
     };
     this.upsertUser(demoUser);
@@ -340,11 +340,11 @@ class AppDatabase {
         folder: 'inbox',
         senderName: 'David Miller',
         senderEmail: 'david@techcorp.io',
-        recipientEmail: 'alex.developer@example.com',
+        recipientEmail: 'abinaya@example.com',
         subject: 'Q3 Roadmap & Architecture Review',
-        snippet: 'Hey Alex, attached is the updated Q3 engineering roadmap. Let me know when you have 15 mins to review the AI pipeline architecture.',
-        bodyText: "Hey Alex,\n\nI updated our Q3 engineering roadmap to prioritize the AI co-pilot and real-time synchronization layers. Let's make sure our UI action dispatch protocol is fully covered.\n\nCould we meet tomorrow at 3pm to review the architecture?\n\nBest,\nDavid",
-        bodyHtml: "<p>Hey Alex,</p><p>I updated our Q3 engineering roadmap to prioritize the AI co-pilot and real-time synchronization layers. Let's make sure our UI action dispatch protocol is fully covered.</p><p>Could we meet tomorrow at 3pm to review the architecture?</p><p>Best,<br><strong>David Miller</strong><br>VP of Engineering</p>",
+        snippet: 'Hi Abinaya, attached is the updated Q3 engineering roadmap. Let me know when you have 15 mins to review the AI pipeline architecture.',
+        bodyText: "Hi Abinaya,\n\nI updated our Q3 engineering roadmap to prioritize the AI co-pilot and real-time synchronization layers. Let's make sure our UI action dispatch protocol is fully covered.\n\nCould we meet tomorrow at 3pm to review the architecture?\n\nBest,\nDavid",
+        bodyHtml: "<p>Hi Abinaya,</p><p>I updated our Q3 engineering roadmap to prioritize the AI co-pilot and real-time synchronization layers. Let's make sure our UI action dispatch protocol is fully covered.</p><p>Could we meet tomorrow at 3pm to review the architecture?</p><p>Best,<br><strong>David Miller</strong><br>VP of Engineering</p>",
         date: now - 1 * 60 * 60 * 1000, // 1 hour ago
         isUnread: true,
         isStarred: true,
@@ -356,11 +356,11 @@ class AppDatabase {
         folder: 'inbox',
         senderName: 'Sarah Jenkins',
         senderEmail: 'sarah.j@knowlab.org',
-        recipientEmail: 'alex.developer@example.com',
+        recipientEmail: 'abinaya@example.com',
         subject: 'Project Update: Design System & UX components',
-        snippet: 'Hi Alex, the design system updates for dark mode and the AI assistant panel are ready in Figma. Check out the token variables.',
-        bodyText: "Hi Alex,\n\nThe new design tokens for the mail app are finalized! We gave special attention to the animated compose modal and interactive chips in the assistant panel.\n\nPlease take a look at the attached Figma link and let me know if you need any SVGs or icons exported.\n\nCheers,\nSarah",
-        bodyHtml: "<p>Hi Alex,</p><p>The new design tokens for the mail app are finalized! We gave special attention to the animated compose modal and interactive chips in the assistant panel.</p><p>Please take a look at the Figma link and let me know if you need any SVGs or icons exported.</p><p>Cheers,<br>Sarah Jenkins</p>",
+        snippet: 'Hi Abinaya, the design system updates for dark mode and the AI assistant panel are ready in Figma. Check out the token variables.',
+        bodyText: "Hi Abinaya,\n\nThe new design tokens for the mail app are finalized! We gave special attention to the animated compose modal and interactive chips in the assistant panel.\n\nPlease take a look at the attached Figma link and let me know if you need any SVGs or icons exported.\n\nCheers,\nSarah",
+        bodyHtml: "<p>Hi Abinaya,</p><p>The new design tokens for the mail app are finalized! We gave special attention to the animated compose modal and interactive chips in the assistant panel.</p><p>Please take a look at the Figma link and let me know if you need any SVGs or icons exported.</p><p>Cheers,<br>Sarah Jenkins</p>",
         date: now - 3 * day, // 3 days ago
         isUnread: false,
         isStarred: false,
@@ -372,11 +372,11 @@ class AppDatabase {
         folder: 'inbox',
         senderName: 'John Edwards',
         senderEmail: 'john@example.com',
-        recipientEmail: 'alex.developer@example.com',
+        recipientEmail: 'abinaya@example.com',
         subject: 'Meeting Tomorrow: Product Strategy',
         snippet: 'Looking forward to our sync tomorrow at 3pm. Let me know if the agenda needs any adjustments.',
-        bodyText: "Alex,\n\nConfirming our session for tomorrow. We'll be walking through user feedback on the natural language UI controls.\n\nSee you then,\nJohn",
-        bodyHtml: "<p>Alex,</p><p>Confirming our session for tomorrow. We'll be walking through user feedback on the natural language UI controls.</p><p>See you then,<br>John</p>",
+        bodyText: "Abinaya,\n\nConfirming our session for tomorrow. We'll be walking through user feedback on the natural language UI controls.\n\nSee you then,\nJohn",
+        bodyHtml: "<p>Abinaya,</p><p>Confirming our session for tomorrow. We'll be walking through user feedback on the natural language UI controls.</p><p>See you then,<br>John</p>",
         date: now - 5 * day, // 5 days ago
         isUnread: false,
         isStarred: false,
@@ -388,7 +388,7 @@ class AppDatabase {
         folder: 'inbox',
         senderName: 'GitHub Notifications',
         senderEmail: 'notifications@github.com',
-        recipientEmail: 'alex.developer@example.com',
+        recipientEmail: 'abinaya@example.com',
         subject: '[PR #42] Merge: Implement Gemini tool calling & action dispatch',
         snippet: 'Pull request #42 was successfully reviewed and approved by Aswath363 and akshaiP.',
         bodyText: "Pull request #42: 'Implement Gemini tool calling & action dispatch' has been approved and merged into main.\n\nCollaborators: Aswath363, akshaiP, ashwanthnebula",
@@ -404,11 +404,11 @@ class AppDatabase {
         folder: 'inbox',
         senderName: 'Dr. Elena Rostova',
         senderEmail: 'elena.rostova@ai-research.edu',
-        recipientEmail: 'alex.developer@example.com',
+        recipientEmail: 'abinaya@example.com',
         subject: 'Paper preprint: Programmatic UI Manipulation via LLM Function Calling',
-        snippet: 'Dear Alex, here is our draft on how agentic assistants can directly paint UIs and automate complex multi-turn workflows.',
-        bodyText: "Dear Alex,\n\nWe just finalized the preprint comparing text-only chatbots with interface-controlling agents. The evaluation showed a 78% increase in task completion speed when LLMs drive form fills and navigation directly.\n\nBest regards,\nElena",
-        bodyHtml: "<p>Dear Alex,</p><p>We just finalized the preprint comparing text-only chatbots with interface-controlling agents. The evaluation showed a <strong>78% increase in task completion speed</strong> when LLMs drive form fills and navigation directly.</p><p>Best regards,<br>Elena",
+        snippet: 'Dear Abinaya, here is our draft on how agentic assistants can directly paint UIs and automate complex multi-turn workflows.',
+        bodyText: "Dear Abinaya,\n\nWe just finalized the preprint comparing text-only chatbots with interface-controlling agents. The evaluation showed a 78% increase in task completion speed when LLMs drive form fills and navigation directly.\n\nBest regards,\nElena",
+        bodyHtml: "<p>Dear Abinaya,</p><p>We just finalized the preprint comparing text-only chatbots with interface-controlling agents. The evaluation showed a <strong>78% increase in task completion speed</strong> when LLMs drive form fills and navigation directly.</p><p>Best regards,<br>Elena",
         date: now - 9 * day, // 9 days ago
         isUnread: false,
         isStarred: false,
@@ -418,13 +418,13 @@ class AppDatabase {
         id: 'msg_sent_01',
         threadId: 'thread_david_roadmap',
         folder: 'sent',
-        senderName: 'Alex Developer',
-        senderEmail: 'alex.developer@example.com',
+        senderName: 'Abinaya',
+        senderEmail: 'abinaya@example.com',
         recipientEmail: 'david@techcorp.io',
         subject: 'Re: Q3 Roadmap & Architecture Review',
         snippet: 'Thanks David. 3pm tomorrow works well for me. I will prepare the UI action flow diagram.',
-        bodyText: "David,\n\nSounds great! 3pm tomorrow works well. I'll walk through the SSE sync engine and how the assistant pre-fills forms with visual feedback.\n\nCheers,\nAlex",
-        bodyHtml: "<p>David,</p><p>Sounds great! 3pm tomorrow works well. I'll walk through the SSE sync engine and how the assistant pre-fills forms with visual feedback.</p><p>Cheers,<br>Alex</p>",
+        bodyText: "David,\n\nSounds great! 3pm tomorrow works well. I'll walk through the SSE sync engine and how the assistant pre-fills forms with visual feedback.\n\nCheers,\nAbinaya",
+        bodyHtml: "<p>David,</p><p>Sounds great! 3pm tomorrow works well. I'll walk through the SSE sync engine and how the assistant pre-fills forms with visual feedback.</p><p>Cheers,<br>Abinaya</p>",
         date: now - 30 * 60 * 1000, // 30 mins ago
         isUnread: false,
         isStarred: false,

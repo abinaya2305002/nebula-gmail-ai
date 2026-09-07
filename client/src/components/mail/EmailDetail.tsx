@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import {
   ArrowLeft,
   Reply,
@@ -8,6 +8,8 @@ import {
   Mail,
   Calendar,
   Sparkles,
+  Tag,
+  Archive,
 } from 'lucide-react';
 import { useMailStore } from '../../store/mailStore.js';
 import { useUIStore } from '../../store/uiStore.js';
@@ -26,7 +28,7 @@ export const EmailDetail: React.FC = () => {
     return (
       <div className="flex-1 flex flex-col items-center justify-center bg-white dark:bg-slate-900 text-slate-400">
         <Mail className="w-12 h-12 mb-2 text-slate-300 dark:text-slate-700" />
-        <p className="text-sm">Select an email to read</p>
+        <p className="text-sm font-medium">Select an email to read</p>
       </div>
     );
   }
@@ -70,38 +72,51 @@ export const EmailDetail: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col h-full bg-white dark:bg-slate-900 overflow-y-auto">
-      {/* Top Action Toolbar */}
-      <div className="px-6 py-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between select-none sticky top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xs z-10">
-        <div className="flex items-center gap-2">
+      {/* Top Action Toolbar (Authentic Gmail Detail Toolbar) */}
+      <div className="px-6 py-2.5 border-b border-slate-200/80 dark:border-slate-800 flex items-center justify-between select-none sticky top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xs z-10">
+        <div className="flex items-center gap-1">
           <button
             onClick={handleBack}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer mr-2"
+            title="Back to Inbox"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Back to list</span>
-          </button>
-        </div>
-
-        <div className="flex items-center gap-1.5">
-          <button
-            onClick={handleReply}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
-          >
-            <Reply className="w-3.5 h-3.5" />
-            <span>Reply</span>
           </button>
 
           <button
-            onClick={handleForward}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            onClick={() => {
+              useUIStore.getState().addToast({ title: 'Archived', message: 'Email archived', type: 'info' });
+              handleBack();
+            }}
+            className="p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            title="Archive"
           >
-            <Forward className="w-3.5 h-3.5" />
-            <span>Forward</span>
+            <Archive className="w-4 h-4" />
+          </button>
+
+          <button
+            onClick={handleDelete}
+            className="p-2 rounded-full text-slate-600 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            title="Delete"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+
+          <button
+            onClick={() => {
+              useMailStore.getState().markAsRead(selectedEmail.id, true);
+              handleBack();
+            }}
+            className="p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            title="Mark as unread"
+          >
+            <Mail className="w-4 h-4" />
           </button>
 
           <button
             onClick={() => toggleStar(selectedEmail.id)}
-            className="p-2 rounded-xl text-slate-400 hover:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-full text-slate-400 hover:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            title={selectedEmail.isStarred ? 'Starred' : 'Not starred'}
           >
             <Star
               className={`w-4 h-4 ${
@@ -111,27 +126,44 @@ export const EmailDetail: React.FC = () => {
               }`}
             />
           </button>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleReply}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/60 dark:hover:bg-blue-900/80 text-blue-700 dark:text-blue-300 transition-colors cursor-pointer"
+          >
+            <Reply className="w-3.5 h-3.5" />
+            <span>Reply</span>
+          </button>
 
           <button
-            onClick={handleDelete}
-            className="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            onClick={handleForward}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
           >
-            <Trash2 className="w-4 h-4" />
+            <Forward className="w-3.5 h-3.5" />
+            <span>Forward</span>
           </button>
         </div>
       </div>
 
       {/* Main Email Reading Content */}
       <div className="p-8 max-w-4xl">
-        {/* Email Subject Title */}
-        <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6 leading-snug">
-          {selectedEmail.subject}
-        </h2>
+        {/* Email Subject Title & Badge */}
+        <div className="flex items-start justify-between gap-4 mb-6">
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white leading-snug">
+            {selectedEmail.subject}
+          </h2>
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shrink-0">
+            <Tag className="w-3 h-3" />
+            <span>Inbox</span>
+          </span>
+        </div>
 
         {/* Sender & Recipient Information */}
         <div className="flex items-start justify-between gap-4 pb-6 border-b border-slate-100 dark:border-slate-800">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm shadow-xs">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-sky-600 to-blue-600 text-white flex items-center justify-center font-bold text-sm shadow-xs">
               {selectedEmail.senderName.charAt(0).toUpperCase()}
             </div>
             <div>
@@ -144,7 +176,7 @@ export const EmailDetail: React.FC = () => {
                 </span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                to {selectedEmail.recipientEmail}
+                to me &lt;{selectedEmail.recipientEmail}&gt;
               </p>
             </div>
           </div>
@@ -167,21 +199,26 @@ export const EmailDetail: React.FC = () => {
           )}
         </div>
 
-        {/* Bottom Quick Reply Prompt Bar */}
-        <div className="mt-8 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
-            <Sparkles className="w-4 h-4 text-indigo-500" />
-            <span>Tip: You can ask the AI co-pilot: <span className="font-medium text-slate-800 dark:text-slate-200">"Reply to this"</span> or <span className="font-medium text-slate-800 dark:text-slate-200">"Forward this to..."</span></span>
-          </div>
+        {/* Bottom Gmail Reply / Forward Action Buttons */}
+        <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center gap-3">
           <button
             onClick={handleReply}
-            className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-xs"
+            className="flex items-center gap-2 px-6 py-2 rounded-full border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold transition-all cursor-pointer"
           >
-            Reply to Email
+            <Reply className="w-4 h-4 text-slate-500" />
+            <span>Reply</span>
+          </button>
+
+          <button
+            onClick={handleForward}
+            className="flex items-center gap-2 px-6 py-2 rounded-full border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold transition-all cursor-pointer"
+          >
+            <Forward className="w-4 h-4 text-slate-500" />
+            <span>Forward</span>
           </button>
         </div>
 
-        {/* Conversation Thread / History (Bonus +3) */}
+        {/* Conversation Thread / History */}
         {selectedThread && selectedThread.messages.length > 1 && (
           <ThreadView thread={selectedThread} currentEmailId={selectedEmail.id} />
         )}

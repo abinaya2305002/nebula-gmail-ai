@@ -1,4 +1,4 @@
-﻿import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { EmailParser } from '../src/utils/email-parser.js';
 import { QueryBuilder } from '../src/utils/query-builder.js';
 
@@ -29,16 +29,16 @@ describe('EmailParser', () => {
       id: 'msg_12345',
       threadId: 'thread_12345',
       labelIds: ['INBOX', 'UNREAD'],
-      snippet: 'Hey Alex, here is the proposal',
+      snippet: 'Hi Abinaya, here is the proposal',
       payload: {
         headers: [
           { name: 'From', value: 'David Miller <david@techcorp.io>' },
-          { name: 'To', value: 'alex@example.com' },
+          { name: 'To', value: 'abinaya@example.com' },
           { name: 'Subject', value: 'Proposal review' },
           { name: 'Date', value: 'Fri, 04 Sep 2026 10:00:00 GMT' },
         ],
         body: {
-          data: EmailParser.encodeBase64Url('Hey Alex, here is the proposal body.'),
+          data: EmailParser.encodeBase64Url('Hi Abinaya, here is the proposal body.'),
         },
       },
     };
@@ -49,7 +49,7 @@ describe('EmailParser', () => {
     expect(parsed.senderName).toBe('David Miller');
     expect(parsed.subject).toBe('Proposal review');
     expect(parsed.isUnread).toBe(true);
-    expect(parsed.bodyText).toBe('Hey Alex, here is the proposal body.');
+    expect(parsed.bodyText).toBe('Hi Abinaya, here is the proposal body.');
   });
 });
 

@@ -1,4 +1,4 @@
-﻿import { create } from 'zustand';
+import { create } from 'zustand';
 import { EmailFilterParams, EmailMessage, EmailThread, MailStats } from '../types/mail.js';
 
 const API_BASE = 'http://localhost:5000/api';
@@ -13,6 +13,7 @@ interface MailState {
   isLoading: boolean;
   isSending: boolean;
   highlightedEmailId: string | null;
+  previousFilterState: EmailFilterParams | null;
 
   fetchEmails: (customParams?: Partial<EmailFilterParams>) => Promise<void>;
   fetchStats: () => Promise<void>;
@@ -20,6 +21,7 @@ interface MailState {
   fetchThread: (threadId: string) => Promise<void>;
   setFilters: (filters: Partial<EmailFilterParams>) => void;
   resetFilters: () => void;
+  undoLastAction: () => void;
   setActiveFolder: (folder: string) => void;
   markAsRead: (id: string, isUnread: boolean) => Promise<void>;
   toggleStar: (id: string) => Promise<void>;
@@ -35,6 +37,7 @@ export const useMailStore = create<MailState>((set, get) => ({
   selectedThread: null,
   activeFolder: 'inbox',
   filters: { folder: 'inbox' },
+  previousFilterState: null,
   stats: { inboxCount: 0, unreadCount: 0, sentCount: 0, starredCount: 0 },
   isLoading: false,
   isSending: false,
@@ -118,15 +121,25 @@ export const useMailStore = create<MailState>((set, get) => ({
   },
 
   setFilters: (newFilters) => {
-    const updated = { ...get().filters, ...newFilters };
-    set({ filters: updated });
+    const current = get().filters;
+    const updated = { ...current, ...newFilters };
+    set({ previousFilterState: current, filters: updated });
     get().fetchEmails(updated);
   },
 
   resetFilters: () => {
+    const current = get().filters;
     const defaultFilters: EmailFilterParams = { folder: get().activeFolder };
-    set({ filters: defaultFilters });
+    set({ previousFilterState: current, filters: defaultFilters });
     get().fetchEmails(defaultFilters);
+  },
+
+  undoLastAction: () => {
+    const prev = get().previousFilterState;
+    if (prev) {
+      set({ filters: prev, previousFilterState: null });
+      get().fetchEmails(prev);
+    }
   },
 
   setActiveFolder: (folder) => {

@@ -1,4 +1,4 @@
-﻿import { Response } from 'express';
+import { Response } from 'express';
 import { mailService } from './gmail.service.js';
 import { db } from '../db/database.js';
 import { EmailMessage } from '../types/index.js';
@@ -82,7 +82,7 @@ export class SyncService {
     const senders = [
       { name: 'Sarah Jenkins', email: 'sarah.j@knowlab.org' },
       { name: 'David Miller', email: 'david@techcorp.io' },
-      { name: 'Alex Rivera', email: 'alex.r@venturecap.com' },
+      { name: 'Maya Rivera', email: 'maya.r@venturecap.com' },
       { name: 'Dr. Elena Rostova', email: 'elena.rostova@ai-research.edu' },
     ];
     const picked = senders[Math.floor(Math.random() * senders.length)];
@@ -101,11 +101,11 @@ export class SyncService {
       folder: 'inbox',
       senderName: picked.name,
       senderEmail: picked.email,
-      recipientEmail: 'alex.developer@example.com',
+      recipientEmail: 'abinaya@example.com',
       subject,
       snippet: 'Real-time push delivery confirmed! This email appeared instantly without manual page refresh.',
-      bodyText: `Hello Alex,\n\nThis message was dispatched to your inbox via real-time push synchronization.\nThe UI updated instantly without requiring you to click refresh!\n\nBest regards,\n${picked.name}`,
-      bodyHtml: `<p>Hello Alex,</p><p>This message was dispatched to your inbox via <strong>real-time push synchronization</strong>.</p><p>The UI updated instantly without requiring you to click refresh!</p><p>Best regards,<br>${picked.name}</p>`,
+      bodyText: `Hello Abinaya,\n\nThis message was dispatched to your inbox via real-time push synchronization.\nThe UI updated instantly without requiring you to click refresh!\n\nBest regards,\n${picked.name}`,
+      bodyHtml: `<p>Hello Abinaya,</p><p>This message was dispatched to your inbox via <strong>real-time push synchronization</strong>.</p><p>The UI updated instantly without requiring you to click refresh!</p><p>Best regards,<br>${picked.name}</p>`,
       date: now,
       isUnread: true,
       isStarred: false,

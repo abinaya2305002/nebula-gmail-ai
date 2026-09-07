@@ -1,4 +1,4 @@
-﻿import { Router } from 'express';
+import { Router } from 'express';
 import { aiService } from '../services/ai.service.js';
 import { db } from '../db/database.js';
 import { UIContextSnapshot } from '../types/index.js';
@@ -41,3 +41,19 @@ aiRouter.get('/history', (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+aiRouter.get('/status', (req, res) => {
+  res.json({
+    activeGemini: aiService.hasActiveGemini(),
+  });
+});
+
+aiRouter.post('/set-key', (req, res) => {
+  const { apiKey } = req.body;
+  const success = aiService.setApiKey(apiKey);
+  res.json({
+    success,
+    activeGemini: aiService.hasActiveGemini(),
+  });
+});
+

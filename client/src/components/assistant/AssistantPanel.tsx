@@ -1,5 +1,5 @@
-﻿import React, { useState } from 'react';
-import { Sparkles, X, Send, Trash2, Zap } from 'lucide-react';
+import React, { useState } from 'react';
+import { Sparkles, X, Send, Trash2, Terminal } from 'lucide-react';
 import { useAIStore } from '../../store/aiStore.js';
 import { useUIStore } from '../../store/uiStore.js';
 import { MessageList } from './MessageList.js';
@@ -10,6 +10,7 @@ export const AssistantPanel: React.FC = () => {
   const toggleAssistant = useUIStore((s) => s.toggleAssistant);
   const messages = useAIStore((s) => s.messages);
   const isLoading = useAIStore((s) => s.isLoading);
+  const isExecuting = useAIStore((s) => s.isExecuting);
   const sendMessage = useAIStore((s) => s.sendMessage);
   const clearHistory = useAIStore((s) => s.clearHistory);
 
@@ -32,19 +33,29 @@ export const AssistantPanel: React.FC = () => {
   };
 
   return (
-    <div className="w-96 border-l border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col h-screen select-none shadow-lg z-20">
+    <aside className="w-96 border-l border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col h-screen select-none shadow-xl z-20 shrink-0">
       {/* Header */}
-      <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-xs">
+      <div className="p-3.5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-white dark:bg-slate-900">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-teal-600 to-cyan-500 flex items-center justify-center text-white shadow-md shadow-teal-600/20">
             <Sparkles className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white leading-tight">
-              AI Co-pilot
-            </h3>
-            <p className="text-[11px] text-indigo-600 dark:text-indigo-400 font-medium">
-              Controls Application UI
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white leading-tight">
+                Nebula AI Copilot
+              </h3>
+              <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-semibold tracking-wide uppercase ${
+                isExecuting
+                  ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300 animate-pulse'
+                  : 'bg-teal-50 text-teal-700 dark:bg-teal-950/60 dark:text-teal-300'
+              }`}>
+                <span className={`w-1.5 h-1.5 rounded-full ${isExecuting ? 'bg-amber-500' : 'bg-teal-500'}`} />
+                {isExecuting ? 'Executing' : 'Ready'}
+              </span>
+            </div>
+            <p className="text-[11px] text-teal-600 dark:text-teal-400 font-medium">
+              Gmail UI Assistant
             </p>
           </div>
         </div>
@@ -53,14 +64,14 @@ export const AssistantPanel: React.FC = () => {
           <button
             onClick={clearHistory}
             title="Clear Chat History"
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
           >
             <Trash2 className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={toggleAssistant}
-            title="Close Assistant Panel"
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            title="Close Copilot Panel"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -81,18 +92,18 @@ export const AssistantPanel: React.FC = () => {
             value={inputPrompt}
             onChange={(e) => setInputPrompt(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Instruct the AI (e.g. 'Reply to this')..."
-            className="w-full pl-3.5 pr-10 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 border border-transparent focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-900 focus:outline-none transition-all"
+            placeholder="Ask Nebula Copilot (e.g. 'Show my recent emails')..."
+            className="w-full pl-3.5 pr-10 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 border border-transparent focus:border-teal-500 focus:bg-white dark:focus:bg-slate-900 focus:outline-none transition-all"
           />
           <button
             type="submit"
             disabled={!inputPrompt.trim() || isLoading}
-            className="absolute right-2 p-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white disabled:opacity-40 transition-all shadow-xs"
+            className="absolute right-2 p-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white disabled:opacity-40 transition-all shadow-xs cursor-pointer"
           >
             <Send className="w-3 h-3" />
           </button>
         </div>
       </form>
-    </div>
+    </aside>
   );
 };

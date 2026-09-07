@@ -1,4 +1,4 @@
-﻿import { OAuth2Client } from 'google-auth-library';
+import { OAuth2Client } from 'google-auth-library';
 import { config } from '../config.js';
 import { db } from '../db/database.js';
 import { UserAccount, UserProfile } from '../types/index.js';
@@ -145,8 +145,8 @@ export class AuthService {
 
     return {
       id: 'demo_user_nebula',
-      email: 'alex.developer@example.com',
-      displayName: 'Alex Developer',
+      email: 'abinaya@example.com',
+      displayName: 'Abinaya',
       isDemoUser: true,
     };
   }
