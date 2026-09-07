@@ -6,14 +6,6 @@
 
 ---
 
-## Collaborators to Invite (Private GitHub Repository)
-As instructed in the hiring task, please ensure the following collaborators are invited to the private repository:
-- `Aswath363`
-- `akshaiP`
-- `ashwanthnebula`
-
----
-
 ## 🌟 Key Features & Requirements Matrix
 
 | Requirement | Implementation Details | Status |
