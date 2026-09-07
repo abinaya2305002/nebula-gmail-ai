@@ -197,6 +197,37 @@ In the application, click on the **AI Co-pilot panel** on the right (or click an
    - *Decision*: For sensitive actions like sending emails or deleting messages, the assistant drafts the action and requests confirmation before final dispatch.
 
 ---
+## Screenshots
+
+### Inbox
+
+![Inbox](client/public/screenshot/screenshotsinbox.png.png)
+
+### Interface
+
+![Interface](client/public/screenshot/Interface.png)
+
+### Recent Mails
+
+![Recent Mails](client/public/screenshot/Recent_mails.png)
+
+### AI Copilot
+
+![AI Copilot](client/public/screenshot/copilot.png.png)
+
+### Show Mail
+
+![Show Mail](client/public/screenshot/Show_mail.png.png)
+
+### Show Last Email
+
+![Show Last Email](client/public/screenshot/Show_last_email.png)
+
+### Automate Task
+
+![Automate Task](client/public/screenshot/Automate_task.png.png)
+
+---
 
 ## Demo
 
