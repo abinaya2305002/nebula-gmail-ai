@@ -1,5 +1,5 @@
-1. Architecture
-   ## Architecture
+
+## Architecture
 
 Nebula Gmail follows a client-server architecture where the React frontend
 provides the email interface and the backend handles Gmail integration,
@@ -117,8 +117,6 @@ easier to maintain.
 The interface follows a familiar Gmail-inspired layout so users can
 understand the email workflow easily while using the AI assistant as the
 primary interaction layer.
-3. Installation / Setup
-  ## Setup and Installation
 
 ### Prerequisites
 
@@ -134,20 +132,20 @@ primary interaction layer.
 git clone YOUR_GITHUB_REPOSITORY_URL
 cd nebula-gmail-ai
 
-4.Install dependencies
+## Install dependencies
   npm install
 
-5.Configure environment variables
+## Configure environment variables
 Create a .env file and add the required credentials:
 
 GEMINI_API_KEY=your_gemini_api_key
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 
-6.Start the application
+## Start the application
 npm run dev
 
-7.ScreenShots
+## ScreenShots
 Main Interface
 <img src="C:\Users\abina\.gemini\antigravity\scratch\ai-mail-app\client\public\screenshot\Interface.png" alt="AI Mail App Interface" width="800"/>
 Inbox
